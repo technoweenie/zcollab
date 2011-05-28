@@ -8,7 +8,11 @@ pub = zmq.createSocket('pub')
 sub.subscribe("dakee.js")
 
 sub.on('message', function(data) {
-  console.log(data.toString());
+  data = data.slice("dakee.js \n".length)
+  fs.open("dakee.js", "w+", 0666, function(err, fd){
+    buffer = new Buffer(data);
+    fs.write(fd, buffer, 0, buffer.length)
+  })
 });
 
 sub.on('error', function(error) {
