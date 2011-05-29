@@ -1,3 +1,7 @@
+// Syncs dakee.js to all subscribed listeners.
+// Binds a PUB socket on 5554
+// Connects a SUB socket to IP specified by CLIENT_IP env var.
+
 var zmq = require('zeromq');
 var ip = process.env.CLIENT_IP
 var fs = require('fs')
