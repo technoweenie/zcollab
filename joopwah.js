@@ -17,6 +17,7 @@ var context = require('zeromq'),
   dmp = require('diff_match_patch')
   
   
+// see if there is a server running on our local network
 var browser = mdns.createBrowser('http', 'tcp');
 var foundServer = false,
   peers = [],
@@ -34,7 +35,7 @@ router.identity = name
 
 setTimeout(function(){ 
   if(foundServer){
-    console.log("Logging in as", name)
+    console.log("Connecting to server as", name, " (identities must be unique)")
     router.connect("tcp://localhost:5555")
     router.on('message', function(from, msg) {
       var dar = new dmp.diff_match_patch();
@@ -80,28 +81,6 @@ setTimeout(function(){
     })
   } 
 }, 1000)
-
-process.stdin.on("data", function(buf) {
-  if(buf[0] == 13) {
-    var text = message.trim()
-    message = ''
-    if(text == '') return
-    if(text == 'q') {
-      console.log("Closing...")
-      process.stdin.pause()
-      router.close()
-      process.kill()
-    } else {
-      if(server){
-
-      } else {
-        router.send("towski", text)
-      }
-    }
-  } else {
-    message += buf.toString()
-  }
-})
 
 fs.watchFile("dakee.js", function (curr, prev) {
   if(curr.mtime.getTime() != prev.mtime.getTime()){
