@@ -1,12 +1,13 @@
-// rick ip: 192.168.1.142
-// towski ip: 192.168.1.25
+// Useless one-to-one chat
+// Binds a REP socket on 5555
+// Connects a REQ socket to IP specified by CLIENT_IP env var
 
 require('tty').setRawMode(true);
 
 var context = require('zeromq')
   , req     = context.createSocket('req')
   , rep     = context.createSocket('rep')
-  , ip      = process.env.CLIENT_IP || '192.168.1.25'
+  , ip      = process.env.CLIENT_IP || '127.0.0.1'
 
 var needsAnswer = false
 rep.on('message', function(msg) {
